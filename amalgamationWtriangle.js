@@ -14,6 +14,7 @@ const triSize = 250;
 const layers = 50;
 const variance = triSize / 21;
 
+
 const palette = [
   color(204, 16, 45),
   color(232, 133, 20),
