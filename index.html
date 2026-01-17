@@ -5,18 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Project 31</title>
   <style>
-    /* optional niceties */
-    html, body { margin: 0; padding: 0; background: #0b0613; }
-    #sketch-container { display: grid; place-items: center; min-height: 100dvh; }
-    canvas { display: block; }
-  </style>
-  <!-- p5.js (keep this before your sketch) -->
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+  }
+  #sketch-container {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  canvas {
+    display: block;
+  }
+</style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
 </head>
 <body> 
   <main id="sketch-container"></main>
-
-  <!-- your sketch (must come after p5) -->
   <script src="Snow-day-digital.js"></script>
 </body>
 </html>
