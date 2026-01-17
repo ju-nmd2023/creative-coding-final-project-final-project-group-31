@@ -74,7 +74,7 @@ function rebuildBackground() {
 }
 
 function setup() {
-  createCanvas(innerHeight, innerWidth);
+  createCanvas(innerWidth, innerHeight);
 
   // Random sway per generation for the partcles
   swayPhaseOffset = random(TWO_PI);
