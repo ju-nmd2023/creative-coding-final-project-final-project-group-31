@@ -1,59 +1,8 @@
-// tone.js
-let audioStarted = false;
 
-let jingleBell;        
-let darkSynth;   
-let nextjingleBellTime = 0;
+let audioReady = false;
 
-async function startAudio() {
-  if (audioStarted) return;
-
-  await Tone.start();
-
-  //jingleBell sound
-  jingleBell = new Tone.MetalSynth({
-    frequency: 250,
-    envelope: { attack: 0.001, decay: 0.25, release: 0.1 },
-    harmonicity: 5,
-    modulationIndex: 25,
-    resonance: 400,
-    octaves: 1.2
-  }).toDestination();
-
-  //dark synth sound
-  darkSynth = new Tone.Synth({
-    oscillator: { type: "sawtooth" },
-    envelope: { attack: 0.01, decay: 0.4, sustain: 0, release: 0.6 }
-  }).toDestination();
-
-  audioStarted = true;
-  nextjingleBellTime = millis() + random(2000, 7000);
-}
-
-function mousePressed() {
-  startAudio();
-}
-
-function touchStarted() {
-  startAudio();
-  return false;
-}
-
-// play one jingleBell note
-function playJingleBell() {
-  if (!audioStarted) return;
-
-  //jingle bell pitches
-  let notes = ["C6", "E6", "G6", "A6"];
-  jingleBell.triggerAttackRelease(random(notes), "16n");
-}
-
-// dark hit on rebuild
-function playDarkHit() {
-  if (!audioStarted) return;
-  darkSynth.triggerAttackRelease("C2", "8n");
-}
-
+let synth, darkSynth;
+let jingleFX, darkFX;
 
 let particles = [];
 
@@ -128,7 +77,7 @@ function rebuildBackground() {
       drawLayers(bg, size / 2 + x * size, size / 2 + y * size, size, layers);
     }
   }
-  playDarkHit();
+  if (audioOn) dark.triggerAttackRelease(["C2","G2","Bb2"], "1n");
 }
 
 function setup() {
@@ -165,12 +114,9 @@ function draw() {
     particles[i].draw();
     if (particles[i].durationEnd) particles.splice(i, 1);
   }
-    // occasional jinglebell sounds
-    if (audioStarted && millis() > nextBellTime) {
-      playJingleBell();
-      nextBellTime = millis() + random(4000, 14000); // next bell in 4–14 sec
-    }
-  
+  if (audioOn && random() < 0.01) {        // ~1% chance per frame
+    bell.triggerAttackRelease("16n");
+  }
 }
 
 function spawnParticle(x, y) {
@@ -222,9 +168,13 @@ class Particle {
   }
 }  
 
-// press space to reset bg. 
+function mousePressed() {
+  startAudio();
+}
+
 function keyPressed() {
   if (key === ' ') {
+    startAudio();
     rebuildBackground();
   }
 }
