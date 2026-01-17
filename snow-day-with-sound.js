@@ -5,6 +5,22 @@ let jingleBell;
 let darkSynth;
 let nextjingleBellTime = 0;
 
+// If Tone.js isn't included in index.html, load it automatically.
+function ensureToneLoaded() {
+  if (typeof Tone !== "undefined") return Promise.resolve(true);
+
+  return new Promise((resolve) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js";
+    s.onload = () => resolve(true);
+    s.onerror = () => {
+      console.warn("Could not load Tone.js. Check your internet connection or script URL.");
+      resolve(false);
+    };
+    document.head.appendChild(s);
+  });
+}
+
 async function startAudio() {
   if (audioStarted) return;
 
