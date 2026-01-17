@@ -1,7 +1,7 @@
 let particles = [];
 
 // tweak particles, keep particleAmount lower to reduce lag
-let particleAmount = 2;
+let particleAmount = 4;
 let durationMin = 80;
 let durationMax = 900;
 
