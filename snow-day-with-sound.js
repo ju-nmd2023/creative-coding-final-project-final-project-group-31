@@ -27,7 +27,7 @@ async function startAudio() {
   }).toDestination();
 
   audioStarted = true;
-  nextjingleBellTime = millis() + random(2000, 7000);
+  nextjingleBellTime = millis() + random(300, 550);
 }
 
 function mousePressed() {
