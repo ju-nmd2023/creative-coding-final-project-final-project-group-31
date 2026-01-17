@@ -11,7 +11,7 @@ let bandY = -25;
 let dirY = 0.2;
 
 // physics
-let gravityStrength = 0.10;
+let gravityStrength = 0.1;
 
 // sway timings
 let swayT = 0;
@@ -25,11 +25,34 @@ let prevSwayOffset = 0;
 let swayVel = 0;
 
 // bg below
-let bg; 
+let bg;
 
-const size = 11;        
-const layers = 20;       
+const size = 11;
+const layers = 20;
 const variance = size / layers;
+
+// sound
+let synth = null;
+const notes = ["C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"];
+const waves = ["sine", "square", "sawtooth", "triangle"];
+
+// play sound
+function playSpaceSound() {
+  if (Tone.getContext().state !== "running") {
+    Tone.start();
+  }
+
+  if (!synth) {
+    synth = new Tone.MonoSynth({
+      oscillator: { type: "sine" },
+      envelope: { attack: 0.2, decay: 0.3, sustain: 0.5, release: 0.8 },
+    }).toDestination();
+  }
+
+  synth.oscillator.type = random(waves);
+  const note = random(notes);
+  synth.triggerAttackRelease(note, "4n");
+}
 
 function getRandomValue(pos, variance) {
   return pos + map(Math.random(), 0, 1, -variance, variance);
@@ -51,10 +74,22 @@ function drawLayers(g, x, y, size, layers) {
     const half = s / 2;
 
     g.beginShape();
-    g.vertex(getRandomValue(x - half, variance), getRandomValue(y + half, variance));
-    g.vertex(getRandomValue(x - half, variance), getRandomValue(y - half, variance));
-    g.vertex(getRandomValue(x + half, variance), getRandomValue(y - half, variance));
-    g.vertex(getRandomValue(x + half, variance), getRandomValue(y + half, variance));
+    g.vertex(
+      getRandomValue(x - half, variance),
+      getRandomValue(y + half, variance),
+    );
+    g.vertex(
+      getRandomValue(x - half, variance),
+      getRandomValue(y - half, variance),
+    );
+    g.vertex(
+      getRandomValue(x + half, variance),
+      getRandomValue(y - half, variance),
+    );
+    g.vertex(
+      getRandomValue(x + half, variance),
+      getRandomValue(y + half, variance),
+    );
     g.endShape(CLOSE);
   }
 }
@@ -65,7 +100,7 @@ function rebuildBackground() {
 
   const cols = Math.ceil(width / size) + 1;
   const rows = Math.ceil(height / size) + 1;
-  
+
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       drawLayers(bg, size / 2 + x * size, size / 2 + y * size, size, layers);
@@ -76,7 +111,7 @@ function rebuildBackground() {
 function setup() {
   createCanvas(innerWidth, innerHeight);
 
-  // Random sway per generation for the partcles
+  // Random sway per generation for the particles
   swayPhaseOffset = random(TWO_PI);
   swayAmp = random(10, 26);
   swaySpeed = random(0.06, 0.14);
@@ -88,7 +123,7 @@ function draw() {
   // draw bg without loop
   image(bg, 0, 0);
 
-  // Uupdate global sway
+  // Update global sway
   prevSwayOffset = swayOffset;
   swayT += swaySpeed;
   swayOffset = sin(swayT + swayPhaseOffset) * swayAmp;
@@ -116,7 +151,9 @@ function spawnParticle(x, y) {
   let individualAirThickness = random(0.985, 0.999);
   let individualGravity = random(gravityStrength * 0.6, gravityStrength * 1.4);
 
-  particles.push(new Particle(x, y, duration, individualAirThickness, individualGravity));
+  particles.push(
+    new Particle(x, y, duration, individualAirThickness, individualGravity),
+  );
 }
 
 class Particle {
@@ -156,11 +193,13 @@ class Particle {
     fill(255 * 0.55);
     circle(x, y, this.size * 1.2);
   }
-}  
+}
 
-// press space to reset bg. 
+// press space to reset bg + play sound
 function keyPressed() {
-  if (key === ' ') {
+  if (key === " ") {
     rebuildBackground();
+    playSpaceSound();
+    return false; // helps prevent page scroll in some browsers
   }
 }
