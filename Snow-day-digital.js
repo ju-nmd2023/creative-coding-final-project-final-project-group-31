@@ -60,7 +60,7 @@ function drawLayers(g, x, y, size, layers) {
 }
 
 function rebuildBackground() {
-  bg = createGraphics(width, height);
+  bg = createGraphics(innerWidth, innerHeight);
   bg.background(0);
 
   const cols = Math.ceil(width / size) + 1;
