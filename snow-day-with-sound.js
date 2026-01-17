@@ -5,22 +5,6 @@ let jingleBell;
 let darkSynth;
 let nextjingleBellTime = 0;
 
-// If Tone.js isn't included in index.html, load it automatically.
-function ensureToneLoaded() {
-  if (typeof Tone !== "undefined") return Promise.resolve(true);
-
-  return new Promise((resolve) => {
-    const s = document.createElement("script");
-    s.src = "https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js";
-    s.onload = () => resolve(true);
-    s.onerror = () => {
-      console.warn("Could not load Tone.js. Check your internet connection or script URL.");
-      resolve(false);
-    };
-    document.head.appendChild(s);
-  });
-}
-
 async function startAudio() {
   if (audioStarted) return;
 
@@ -31,11 +15,11 @@ async function startAudio() {
 
   // jingleBell sound
   jingleBell = new Tone.MetalSynth({
-    frequency: 250,
+    frequency: 350,
     envelope: { attack: 0.001, decay: 0.25, release: 0.1 },
-    harmonicity: 5,
+    harmonicity: 10,
     modulationIndex: 25,
-    resonance: 400,
+    resonance: 200,
     octaves: 1.2
   }).toDestination();
 
@@ -46,7 +30,7 @@ async function startAudio() {
   }).toDestination();
 
   audioStarted = true;
-  nextjingleBellTime = millis() + random(2000, 7000);
+  nextjingleBellTime = millis() + random(1000, 2000);
 }
 
 function mousePressed() {
