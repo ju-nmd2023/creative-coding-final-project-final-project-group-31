@@ -5,6 +5,8 @@ let jingleBell;
 let darkSynth;
 let nextjingleBellTime = 0;
 
+
+//chatgpt helped with this as we struggled with loading audio on specific browsers.
 async function startAudio() {
   if (audioStarted) return;
 
@@ -16,10 +18,10 @@ async function startAudio() {
   // jingleBell sound
   jingleBell = new Tone.MetalSynth({
     frequency: 350,
-    envelope: { attack: 0.001, decay: 0.25, release: 0.1 },
+    envelope: { attack: 0.01, decay: 0.35, release: 0.05 },
     harmonicity: 10,
     modulationIndex: 25,
-    resonance: 200,
+    resonance: 450,
     octaves: 1.2
   }).toDestination();
 
@@ -99,12 +101,12 @@ function drawLayers(g, x, y, size, layers) {
 
   let tY = constrain(y / height, 0, 1);
   tY = lerp(0.25, 0, tY);
-  const strokeCol = lerpColor(color(12, 22, 70), color(255), tY);
+  const strsoundOkeCol = lerpColor(color(12, 22, 70), color(255), tY);
 
   for (let i = 0; i < layers; i++) {
     if (Math.random() > 0.09) continue;
 
-    g.stroke(strokeCol);
+    g.strsoundOke(strsoundOkeCol);
 
     const s = (size / layers) * i;
     const half = s / 2;
@@ -220,7 +222,7 @@ class Particle {
     let x = this.baseX + swayOffset * this.swayStrength;
     let y = this.y;
 
-    noStroke();
+    noStrsoundOke();
     fill(255 * 0.55);
     circle(x, y, this.size * 1.2);
   }
