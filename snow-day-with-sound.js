@@ -8,8 +8,8 @@ let nextjingleBellTime = 0;
 async function startAudio() {
   if (audioStarted) return;
 
-  const ok = await ensureToneLoaded();
-  if (!ok || typeof Tone === "undefined") return;
+  const soundOk = await ensureToneLoaded();
+  if (!soundOk || typeof Tone === "undefined") return;
 
   await Tone.start();
 
@@ -30,7 +30,7 @@ async function startAudio() {
   }).toDestination();
 
   audioStarted = true;
-  nextjingleBellTime = millis() + random(1000, 2000);
+  nextjingleBellTime = millis() + random(300, 550);
 }
 
 function mousePressed() {
