@@ -33,8 +33,8 @@ const variance = size / layers;
 
 // sound
 let synth = null;
-const notes = ["C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"];
-const waves = ["sine", "square", "sawtooth", "triangle"];
+const notes = ["C2", "D2", "E2", "F2", "G2", "A2", "B2", "C3"];
+const waves = ["sine", "triangle"];
 
 // play sound
 function playSpaceSound() {
@@ -45,7 +45,7 @@ function playSpaceSound() {
   if (!synth) {
     synth = new Tone.MonoSynth({
       oscillator: { type: "sine" },
-      envelope: { attack: 0.2, decay: 0.3, sustain: 0.5, release: 0.8 },
+      envelope: { attack: 0.03, decay: 0.35, sustain: 0.4, release: 1.1 },
     }).toDestination();
   }
 
