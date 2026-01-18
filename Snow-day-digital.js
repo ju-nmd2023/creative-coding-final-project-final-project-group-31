@@ -142,6 +142,16 @@ function draw() {
     particles[i].draw();
     if (particles[i].durationEnd) particles.splice(i, 1);
   }
+
+  // text
+  push();
+  textAlign(CENTER, CENTER);
+  textSize(18);
+  noStroke();
+
+  fill(255);
+  text("Press SPACE", width / 2, height - 40);
+  pop();
 }
 
 function spawnParticle(x, y) {
